@@ -1,0 +1,10 @@
+{
+  "tokenSetOrder": [
+    "primitives",
+    "mode/dark",
+    "mode/light",
+    "brand/corvid",
+    "brand/aster",
+    "components"
+  ]
+}
