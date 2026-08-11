@@ -1,0 +1,25 @@
+{
+  "name": "token-lab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcin-ux/token-lab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/marcin-ux/token-lab/issues"
+  },
+  "homepage": "https://github.com/marcin-ux/token-lab#readme",
+  "dependencies": {
+    "@tokens-studio/sd-transforms": "^2.0.3",
+    "style-dictionary": "^5.5.1"
+  }
+}
