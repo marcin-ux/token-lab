@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import StyleDictionary from 'style-dictionary';
 import { register, expandTypesMap } from '@tokens-studio/sd-transforms';
 
@@ -31,11 +31,20 @@ function collectNames(obj, prefix = [], out = new Set()) {
   return out;
 }
 
+function tierOf(set) {
+  if (set === 'primitives') return 'primitive';
+  if (set.startsWith('brand/')) return 'brand';
+  if (set.startsWith('mode/')) return 'semantic';
+  if (set === 'components') return 'component';
+  return 'unknown';
+}
+
 const groups = {};
 for (const t of file.$themes) {
   if (!groups[t.group]) groups[t.group] = [];
   groups[t.group].push(t);
 }
+const manifest = {};
 
 for (const brand of groups.Brand) {
   for (const mode of groups.Appearance) {
@@ -47,9 +56,11 @@ for (const brand of groups.Brand) {
 
     const tokens = {};
     const exported = new Set();
+    const tokenTier = new Map();
 
     for (const set of active) {
       deepMerge(tokens, file[set]);
+      collectNames(file[set]).forEach((name) => tokenTier.set(name, tierOf(set)));
       if (selected[set] === 'enabled') {
         collectNames(file[set]).forEach((name) => exported.add(name));
       }
@@ -81,5 +92,45 @@ for (const brand of groups.Brand) {
     });
 
     await sd.buildAllPlatforms();
+
+    const dictionary = await sd.getPlatformTokens('css');
+
+    for (const token of dictionary.allTokens) {
+      const name = token.path.join('.');
+      if (!manifest[name]) {
+        manifest[name] = {
+          name,
+          cssVariable: '--' + token.path.join('-').toLowerCase(),
+          type: token.$type ?? token.type ?? 'unknown',
+          tier: tokenTier.get(name) ?? 'unknown',
+          description: token.$description ?? null,
+          aliases: {},
+          values: {},
+        };
+      }
+      const original = token.original?.$value ?? token.original?.value;
+      if (typeof original === 'string' && original.includes('{')) {
+        manifest[name].aliases[key] = original;
+      }
+      manifest[name].values[key] = String(token.$value ?? token.value);
+    }
+    
   }
 }
+
+for (const token of Object.values(manifest)) {
+  const unique = [...new Set(Object.values(token.aliases))];
+  token.alias = unique.length === 0 ? null : unique.length === 1 ? unique[0] : token.aliases;
+  delete token.aliases;
+}
+
+const PERMS = groups.Brand.flatMap((b) =>
+  groups.Appearance.map((m) => `${b.name}-${m.name}`.toLowerCase())
+);
+
+const payload = { permutations: PERMS, tokens: Object.values(manifest) };
+
+writeFileSync('build/tokens-manifest.json', JSON.stringify(payload, null, 2));
+writeFileSync('build/tokens-manifest.js', `window.__TOKEN_MANIFEST__ = ${JSON.stringify(payload)};`);
+
+console.log(`Manifest: ${Object.values(manifest).length} tokenów, ${PERMS.length} permutacji.`);
