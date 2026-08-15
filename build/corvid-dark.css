@@ -25,46 +25,46 @@
   --color-text-warning: #fec84b;
   --color-text-accent: #5eead4;
   --color-focus-ring: #5eead4;
-  --button-primary-background: #5eead4;
+  --button-primary-background: #5eead4; /** Only one primary action per view. */
   --button-primary-text-disabled: #667085;
   --button-primary-background-hover: #99f6e4;
   --button-primary-background-disabled: #1d2939;
   --button-primary-text: #101828;
   --button-secondary-border-disabled: #344054;
   --button-secondary-text: #f5f6f8;
-  --button-secondary-background: #101828;
+  --button-secondary-background: #101828; /** Default choice for most actions. Primary is the exception. */
   --button-secondary-background-hover: #1d2939;
   --button-secondary-border: #98a2b3;
   --button-secondary-text-disabled: #667085;
   --button-padding-x: 16px;
   --button-radius: 2px;
   --button-padding-y: 8px;
-  --field-label: #f5f6f8;
+  --field-label: #f5f6f8; /** Above the control. Separate from field.text so labels can diverge later. */
   --field-border-disabled: #344054;
   --field-text: #f5f6f8;
   --field-padding-y: 8px;
   --field-padding-x: 12px;
   --field-background-disabled: #1d2939;
   --field-border-error: #d92d20;
-  --field-hint: #98a2b3;
+  --field-hint: #98a2b3; /** Persistent guidance below the control. Replaced by field.error-text when invalid. */
   --field-error-text: #fda29b;
   --field-radius: 2px;
   --field-border: #98a2b3;
   --field-background: #101828;
   --field-placeholder: #98a2b3;
-  --field-gap: 4px;
+  --field-gap: 4px; /** Vertical rhythm between label, control and hint. */
   --badge-padding-x: 8px;
-  --badge-success-background: #1d2939;
+  --badge-success-background: #1d2939; /** Status tone. Subtle fill in light mode, neutral fill in dark to avoid glare. */
   --badge-success-text: #6ce9a6;
   --badge-warning-text: #fec84b;
-  --badge-warning-background: #1d2939;
-  --badge-danger-background: #1d2939;
+  --badge-warning-background: #1d2939; /** Status tone. Subtle fill in light mode, neutral fill in dark to avoid glare. */
+  --badge-danger-background: #1d2939; /** Status tone. Subtle fill in light mode, neutral fill in dark to avoid glare. */
   --badge-danger-text: #fda29b;
   --badge-radius: 4px;
   --badge-padding-y: 4px;
-  --focus-ring-width: 2px;
+  --focus-ring-width: 2px; /** Ring thickness. Accessibility parameter, deliberately not brandable. */
   --focus-ring-offset: 2px;
-  --focus-ring-radius: 4px; /** Only for Figma, in CSS browser does this on it's own */
+  --focus-ring-radius: 4px; /** Outer radius of the focus ring: control radius plus offset. Exists for Figma only; browsers derive this from border-radius automatically. */
   --focus-ring-color: #5eead4;
   --typography-body-font-size: 16px;
   --typography-body-font-family: Inter, system-ui, sans-serif;
