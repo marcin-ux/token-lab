@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en" data-brand="aster" data-mode="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Token Lab — reference</title>
+
+  <!-- All four permutations load at once. Each file is scoped to a
+       [data-brand][data-mode] selector, so the browser applies whichever one
+       matches the attributes on <html>. Switching a theme means changing two
+       attributes: no reload, no swapping stylesheets. -->
+  <link rel="stylesheet" href="../build/aster-light.css" />
+  <link rel="stylesheet" href="../build/aster-dark.css" />
+  <link rel="stylesheet" href="../build/corvid-light.css" />
+  <link rel="stylesheet" href="../build/corvid-dark.css" />
+
+  <style>
+    /* ------------------------------------------------------------------
+       Styled only with semantic and component tokens. No raw hex, no
+       --space-*, no --radius-*. If something is missing here, that is a
+       gap in the token architecture — not a reason to reach into the
+       primitive tier.
+       ------------------------------------------------------------------ */
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: var(--layout-page-padding);
+      background: var(--color-background-subtle);
+      color: var(--color-text-default);
+      font-family: var(--typography-body-font-family);
+      font-size: var(--typography-body-font-size);
+      font-weight: var(--typography-body-font-weight);
+      line-height: var(--typography-body-line-height);
+      display: grid;
+      justify-items: center;
+    }
+
+    .shell {
+      width: min(980px, 100%);
+      display: grid;
+      gap: var(--layout-stack-loose);
+      align-content: start;
+    }
+
+    h1, h2 {
+      margin: 0;
+      font-family: var(--typography-heading-font-family);
+      font-size: var(--typography-heading-font-size);
+      font-weight: var(--typography-heading-font-weight);
+      line-height: var(--typography-heading-line-height);
+    }
+
+    h3 {
+      margin: 0;
+      font-family: var(--typography-label-font-family);
+      font-size: var(--typography-label-font-size);
+      font-weight: var(--typography-label-font-weight);
+      line-height: var(--typography-label-line-height);
+      color: var(--color-text-muted);
+    }
+
+    .caption {
+      margin: 0;
+      font-family: var(--typography-caption-font-family);
+      font-size: var(--typography-caption-font-size);
+      line-height: var(--typography-caption-line-height);
+      color: var(--color-text-muted);
+    }
+
+    header.page { display: grid; gap: var(--layout-stack-tight); }
+
+    section {
+      background: var(--surface-background);
+      border: var(--layout-border-hairline) solid var(--surface-border);
+      border-radius: var(--surface-radius);
+      padding: var(--surface-padding);
+      display: grid;
+      gap: var(--layout-stack-default);
+    }
+
+    .switcher {
+      display: flex;
+      gap: var(--layout-inline-gap);
+      align-items: center;
+      flex-wrap: wrap;
+      padding-top: var(--layout-stack-tight);
+    }
+
+    .row { display: flex; gap: var(--layout-inline-gap); flex-wrap: wrap; align-items: center; }
+    .group { display: grid; gap: var(--layout-stack-tight); }
+    .rows { display: grid; }
+
+    /* --- components --- */
+    button {
+      font: inherit;
+      font-weight: var(--typography-label-font-weight);
+      border-radius: var(--button-radius);
+      padding: var(--button-padding-y) var(--button-padding-x);
+      border: var(--layout-border-hairline) solid transparent;
+      cursor: pointer;
+      min-height: 32px;   /* clears WCAG 2.2 SC 2.5.8 target size (24px) */
+      min-width: 32px;
+    }
+    button:focus-visible {
+      outline: var(--focus-ring-width) solid var(--focus-ring-color);
+      outline-offset: var(--focus-ring-offset);
+    }
+    .btn-primary { background: var(--button-primary-background); color: var(--button-primary-text); }
+    .btn-primary:hover { background: var(--button-primary-background-hover); }
+    .btn-primary:disabled {
+      background: var(--button-primary-background-disabled);
+      color: var(--button-primary-text-disabled);
+      cursor: not-allowed;
+    }
+    .btn-secondary {
+      background: var(--button-secondary-background);
+      color: var(--button-secondary-text);
+      border-color: var(--button-secondary-border);
+    }
+    .btn-secondary:hover { background: var(--button-secondary-background-hover); }
+    .btn-secondary[aria-pressed="true"] {
+      background: var(--color-background-accent-subtle);
+      color: var(--color-text-accent);
+      border-color: var(--color-text-accent);
+    }
+
+    input {
+      font: inherit;
+      color: var(--field-text);
+      background: var(--field-background);
+      border: var(--layout-border-hairline) solid var(--field-border);
+      border-radius: var(--field-radius);
+      padding: var(--field-padding-y) var(--field-padding-x);
+      min-height: 40px;
+    }
+    input::placeholder { color: var(--field-placeholder); }
+    input:focus-visible {
+      outline: var(--focus-ring-width) solid var(--focus-ring-color);
+      outline-offset: var(--focus-ring-offset);
+    }
+    input[aria-invalid="true"] { border-color: var(--field-border-error); }
+    input:disabled {
+      background: var(--field-background-disabled);
+      border-color: var(--field-border-disabled);
+      color: var(--color-text-disabled);
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: var(--badge-radius);
+      padding: var(--badge-padding-y) var(--badge-padding-x);
+      font-family: var(--typography-caption-font-family);
+      font-size: var(--typography-caption-font-size);
+      font-weight: var(--typography-label-font-weight);
+      line-height: var(--typography-caption-line-height);
+    }
+    .badge[data-tone="success"] { background: var(--badge-success-background); color: var(--badge-success-text); }
+    .badge[data-tone="warning"] { background: var(--badge-warning-background); color: var(--badge-warning-text); }
+    .badge[data-tone="danger"]  { background: var(--badge-danger-background);  color: var(--badge-danger-text); }
+
+    /* --- token specimen --- */
+    .token-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: var(--layout-inline-gap);
+      align-items: center;
+      padding-block: var(--layout-stack-tight);
+      border-bottom: var(--layout-border-hairline) solid var(--surface-border);
+    }
+    .swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--field-radius);
+      border: var(--layout-border-hairline) solid var(--surface-border);
+      flex: none;
+    }
+    .token-name {
+      font-family: var(--typography-caption-font-family);
+      font-size: var(--typography-caption-font-size);
+      line-height: var(--typography-caption-line-height);
+    }
+    .token-alias, .token-desc {
+      display: block;
+      font-family: var(--typography-caption-font-family);
+      font-size: var(--typography-caption-font-size);
+      line-height: var(--typography-caption-line-height);
+    }
+    .token-alias { color: var(--color-text-accent); }
+    .token-desc  { color: var(--color-text-muted); }
+    .token-value {
+      font-family: var(--typography-caption-font-family);
+      font-size: var(--typography-caption-font-size);
+      color: var(--color-text-muted);
+      text-align: right;
+      white-space: nowrap;
+    }
+    .token-group-head {
+      padding-top: var(--layout-stack-default);
+      padding-bottom: var(--layout-stack-tight);
+    }
+
+    /* --- contrast audit --- */
+    .audit-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--layout-inline-gap);
+      flex-wrap: wrap;
+    }
+    .verdict {
+      border-radius: var(--badge-radius);
+      padding: var(--badge-padding-y) var(--badge-padding-x);
+      font-family: var(--typography-caption-font-family);
+      font-size: var(--typography-caption-font-size);
+      font-weight: var(--typography-label-font-weight);
+    }
+    .verdict[data-pass="true"]  { background: var(--badge-success-background); color: var(--badge-success-text); }
+    .verdict[data-pass="false"] { background: var(--badge-danger-background);  color: var(--badge-danger-text); }
+
+    .audit-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: var(--layout-inline-gap);
+      align-items: center;
+      padding-block: var(--layout-stack-tight);
+      border-bottom: var(--layout-border-hairline) solid var(--surface-border);
+      font-family: var(--typography-caption-font-family);
+      font-size: var(--typography-caption-font-size);
+      line-height: var(--typography-caption-line-height);
+    }
+    .audit-row .ratio { font-weight: var(--typography-label-font-weight); }
+    .audit-row[data-pass="false"] .ratio { color: var(--field-error-text); }
+    .audit-row .sc { color: var(--color-text-muted); white-space: nowrap; }
+    .pair-preview {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: var(--field-radius);
+      border: var(--layout-border-hairline) solid var(--surface-border);
+    }
+
+    @media (max-width: 640px) {
+      .audit-row { grid-template-columns: 1fr auto; }
+      .audit-row .sc { display: none; }
+      .token-row { grid-template-columns: auto 1fr; }
+      .token-value { grid-column: 2; text-align: left; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <header class="page">
+      <h1>Token Lab</h1>
+      <p class="caption">
+        Primitives → brand → semantic → component, across two brands and two modes.
+        This page is generated from the same build that produces the CSS, so it cannot
+        drift from what ships.
+      </p>
+      <div class="switcher">
+        <button class="btn-secondary" data-brand-btn="aster">Aster</button>
+        <button class="btn-secondary" data-brand-btn="corvid">Corvid</button>
+        <span class="caption" aria-hidden="true">·</span>
+        <button class="btn-secondary" data-mode-btn="light">Light</button>
+        <button class="btn-secondary" data-mode-btn="dark">Dark</button>
+      </div>
+    </header>
+
+    <section>
+      <div class="audit-head">
+        <h2>Contrast audit</h2>
+        <span class="verdict" id="verdict">—</span>
+      </div>
+      <p class="caption">
+        Measured on the built CSS, not the source — so it checks what actually ships.
+        Text pairs need 4.5:1 (SC 1.4.3); borders and focus rings need 3:1 (SC 1.4.11).
+        A failure exits non-zero, so it can block a merge.
+      </p>
+      <div class="rows" id="audit"></div>
+    </section>
+
+    <section>
+      <h2>Components</h2>
+      <div class="group">
+        <h3>Button</h3>
+        <div class="row">
+          <button class="btn-primary">Primary</button>
+          <button class="btn-secondary">Secondary</button>
+          <button class="btn-primary" disabled>Disabled</button>
+        </div>
+      </div>
+      <div class="group">
+        <h3>Field</h3>
+        <div class="row">
+          <input type="text" placeholder="Placeholder" aria-label="Default field" />
+          <input type="text" value="Invalid" aria-invalid="true" aria-label="Invalid field" />
+          <input type="text" value="Disabled" disabled aria-label="Disabled field" />
+        </div>
+      </div>
+      <div class="group">
+        <h3>Badge</h3>
+        <div class="row">
+          <span class="badge" data-tone="success">Success</span>
+          <span class="badge" data-tone="warning">Warning</span>
+          <span class="badge" data-tone="danger">Danger</span>
+        </div>
+      </div>
+      <p class="caption">Tab through the controls to see the focus ring.</p>
+    </section>
+
+    <section>
+      <h2>Tokens</h2>
+      <p class="caption">
+        Values resolve for the active brand and mode. The line under each name is what
+        the token aliases — follow it down to see where the decision lives.
+      </p>
+      <div class="rows" id="specimen"></div>
+    </section>
+
+  </div>
+
+  <!-- Both files assign to window rather than being fetched, so this page works
+       from file:// with no server. fetch() would be blocked by CORS. -->
+  <script src="../build/tokens-manifest.js"></script>
+  <script src="../build/reports/contrast.js"></script>
+  <script>
+    const root = document.documentElement;
+    const manifest = window.__TOKEN_MANIFEST__ ?? { tokens: [] };
+    const report = window.__CONTRAST_REPORT__ ?? { permutations: {} };
+
+    // "aster-light" etc. — the same keys the build and the audit use.
+    const currentKey = () => `${root.dataset.brand}-${root.dataset.mode}`;
+
+    // alias is a string when identical across permutations, an object when it differs.
+    function aliasFor(token, key) {
+      if (!token.alias) return null;
+      return typeof token.alias === 'string' ? token.alias : token.alias[key];
+    }
+
+    // color.* and layout.* are large enough to warrant sub-grouping;
+    // button, field, badge, surface, typography read better as one block each.
+    function groupOf(name) {
+      const parts = name.split('.');
+      return (parts[0] === 'color' || parts[0] === 'layout')
+        ? parts.slice(0, 2).join('.')
+        : parts[0];
+    }
+
+    function renderSpecimen() {
+      const key = currentKey();
+      const host = document.getElementById('specimen');
+      host.textContent = '';
+
+      const usable = manifest.tokens.filter(
+        (t) => t.tier === 'semantic' || t.tier === 'component'
+      );
+
+      const groups = new Map();
+      for (const token of usable) {
+        const g = groupOf(token.name);
+        if (!groups.has(g)) groups.set(g, []);
+        groups.get(g).push(token);
+      }
+
+      for (const [groupName, tokens] of [...groups].sort()) {
+        const heading = document.createElement('h3');
+        heading.className = 'token-group-head';
+        heading.textContent = groupName;
+        host.append(heading);
+
+        for (const token of tokens.sort((a, b) => a.name.localeCompare(b.name))) {
+          const row = document.createElement('div');
+          row.className = 'token-row';
+
+          const swatch = document.createElement('span');
+          swatch.className = 'swatch';
+          if (token.type === 'color') {
+            // Read the live CSS variable, not the manifest value, so the swatch
+            // re-themes along with the rest of the page.
+            swatch.style.background = `var(${token.cssVariable})`;
+          } else {
+            swatch.style.visibility = 'hidden';
+          }
+
+          const middle = document.createElement('div');
+          const name = document.createElement('div');
+          name.className = 'token-name';
+          name.textContent = token.name;
+          middle.append(name);
+
+          const alias = aliasFor(token, key);
+          if (alias) {
+            const a = document.createElement('span');
+            a.className = 'token-alias';
+            a.textContent = '→ ' + alias;
+            middle.append(a);
+          }
+          if (token.description) {
+            const d = document.createElement('span');
+            d.className = 'token-desc';
+            d.textContent = token.description;
+            middle.append(d);
+          }
+
+          const value = document.createElement('div');
+          value.className = 'token-value';
+          value.textContent = token.values?.[key] ?? '';
+
+          row.append(swatch, middle, value);
+          host.append(row);
+        }
+      }
+    }
+
+    function renderAudit() {
+      const data = report.permutations?.[currentKey()];
+      const host = document.getElementById('audit');
+      const verdict = document.getElementById('verdict');
+      host.textContent = '';
+
+      if (!data) {
+        verdict.textContent = 'no report — run npm run contrast';
+        verdict.removeAttribute('data-pass');
+        return;
+      }
+
+      const allPass = data.passed === data.total;
+      verdict.textContent = `${data.passed} / ${data.total} pass`;
+      verdict.dataset.pass = String(allPass);
+
+      for (const r of data.results) {
+        const row = document.createElement('div');
+        row.className = 'audit-row';
+        row.dataset.pass = String(r.pass);
+
+        const label = document.createElement('span');
+        label.textContent = r.label;
+
+        const preview = document.createElement('span');
+        preview.className = 'pair-preview';
+        preview.style.background = `var(${r.bgVar})`;
+        preview.style.color = `var(${r.fgVar})`;
+        preview.textContent = 'Aa';
+
+        const ratio = document.createElement('span');
+        ratio.className = 'ratio';
+        ratio.textContent = r.ratio === null ? (r.error ?? 'n/a') : `${r.ratio}:1`;
+
+        const sc = document.createElement('span');
+        sc.className = 'sc';
+        sc.textContent = `needs ${r.minRatio} · SC ${r.criterion}`;
+
+        row.append(label, preview, ratio, sc);
+        host.append(row);
+      }
+    }
+
+    function render() {
+      for (const btn of document.querySelectorAll('[data-brand-btn]')) {
+        btn.setAttribute('aria-pressed', String(btn.dataset.brandBtn === root.dataset.brand));
+      }
+      for (const btn of document.querySelectorAll('[data-mode-btn]')) {
+        btn.setAttribute('aria-pressed', String(btn.dataset.modeBtn === root.dataset.mode));
+      }
+      renderAudit();
+      renderSpecimen();
+    }
+
+    for (const btn of document.querySelectorAll('[data-brand-btn]')) {
+      btn.addEventListener('click', () => { root.dataset.brand = btn.dataset.brandBtn; render(); });
+    }
+    for (const btn of document.querySelectorAll('[data-mode-btn]')) {
+      btn.addEventListener('click', () => { root.dataset.mode = btn.dataset.modeBtn; render(); });
+    }
+
+    render();
+  </script>
+</body>
+</html>

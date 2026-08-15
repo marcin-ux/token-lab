@@ -40,6 +40,19 @@ function tierOf(set) {
   return 'unknown';
 }
 
+function tierForToken(name, tierMap) {
+  if (tierMap.has(name)) return tierMap.get(name);
+  // Expanded composite tokens (typography.body.fontSize) are not in the map —
+  // only their parent (typography.body) is. Walk up the path until we find it.
+  const parts = name.split('.');
+  while (parts.length > 1) {
+    parts.pop();
+    const parent = parts.join('.');
+    if (tierMap.has(parent)) return tierMap.get(parent);
+  }
+  return 'unknown';
+}
+
 const groups = {};
 for (const t of file.$themes) {
   if (!groups[t.group]) groups[t.group] = [];
@@ -103,7 +116,7 @@ for (const brand of groups.Brand) {
           name,
           cssVariable: '--' + token.name,
           type: token.$type ?? token.type ?? 'unknown',
-          tier: tokenTier.get(name) ?? 'unknown',
+          tier: tierForToken(name, tokenTier),
           description: token.$description ?? null,
           aliases: {},
           values: {},
