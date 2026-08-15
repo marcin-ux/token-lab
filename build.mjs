@@ -36,6 +36,7 @@ function tierOf(set) {
   if (set.startsWith('brand/')) return 'brand';
   if (set.startsWith('mode/')) return 'semantic';
   if (set === 'components') return 'component';
+  if (set === 'layout') return 'semantic';
   return 'unknown';
 }
 
