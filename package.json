@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "node build.mjs",
+     "brief": "node brief.mjs",
      "lint": "node lint.mjs",
      "contrast": "node contrast.mjs",
-     "check": "npm run build && npm run lint && npm run contrast"
+     "check": "npm run build && npm run brief && npm run lint && npm run contrast"
   },
   "repository": {
     "type": "git",
