@@ -100,7 +100,7 @@ for (const brand of groups.Brand) {
       if (!manifest[name]) {
         manifest[name] = {
           name,
-          cssVariable: '--' + token.path.join('-').toLowerCase(),
+          cssVariable: '--' + token.name,
           type: token.$type ?? token.type ?? 'unknown',
           tier: tokenTier.get(name) ?? 'unknown',
           description: token.$description ?? null,
