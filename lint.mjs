@@ -1,4 +1,5 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import path from 'node:path';
 
 const file = JSON.parse(readFileSync('tokens.json', 'utf8'));
 
@@ -56,6 +57,33 @@ for (const set of ALL_SETS) {
   });
 }
 
+// Rule 3: UI code may only consume semantic and component tokens.
+const manifest = JSON.parse(readFileSync('build/tokens-manifest.json', 'utf8'));
+const forbidden = new Set(
+  manifest.tokens
+    .filter((t) => t.tier === 'primitive' || t.tier === 'brand')
+    .map((t) => t.cssVariable)
+);
+
+const RAW_COLOR = /#[0-9a-fA-F]{3,8}\b|(?<![-\w])rgba?\(/;
+const RAW_DIMENSION = /:\s*[^;{]*?(?<![\w.-])(?!0)(\d+(?:\.\d+)?)(px|rem|em)\b/;
+
+for (const dir of ['docs', 'demo']) {
+  if (!existsSync(dir)) continue;
+  for (const f of readdirSync(dir).filter((f) => /\.(html|css|jsx?)$/.test(f))) {
+    const filePath = path.join(dir, f);
+    readFileSync(filePath, 'utf8').split('\n').forEach((line, i) => {
+      const where = `${filePath}:${i + 1}`;
+      if (line.includes('lint-ignore')) return;
+      if (RAW_COLOR.test(line)) violations.push(`${where} — surowy kolor`);
+      if (RAW_DIMENSION.test(line)) violations.push(`${where} — surowy wymiar (${line.match(RAW_DIMENSION)[1]}${line.match(RAW_DIMENSION)[2]})`);
+      for (const v of [...line.matchAll(/var\((--[\w-]+)\)/g)]) {
+        if (forbidden.has(v[1])) violations.push(`${where} — zmienna prymitywna ${v[1]}`);
+      }
+    });
+  }
+}
+
 if (violations.length > 0) {
   console.error(`Lint nie przeszedł — ${violations.length} naruszeń:\n`);
   for (const v of violations) console.error('  ' + v);
@@ -63,4 +91,3 @@ if (violations.length > 0) {
 } else {
   console.log('Lint przeszedł: warstwy aliasowe zawierają wyłącznie referencje, wszystkie aliasy się rozwiązują.');
 }
-
