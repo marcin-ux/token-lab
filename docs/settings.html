@@ -28,7 +28,7 @@
     }
 
     .shell {
-      width: min(680px, 100%);
+      width: min(var(--layout-container-default), 100%);
       display: grid;
       gap: var(--layout-stack-loose);
       align-content: start;
@@ -154,7 +154,7 @@
       border: var(--layout-border-hairline) solid var(--field-border);
       border-radius: var(--field-radius);
       padding: var(--field-padding-y) var(--field-padding-x);
-      min-height: 40px;
+      min-height: var(--layout-control-height-comfortable);
       width: 100%;
     }
 
@@ -186,7 +186,7 @@
 
     textarea {
       resize: vertical;
-      min-height: 80px;
+      min-height: var(--layout-control-height-multiline);
     }
 
     /* two-column layout for wider fields */
@@ -196,7 +196,7 @@
       gap: var(--layout-inline-gap);
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 480px) { /* lint-ignore: breakpoint — no responsive tier in this system */
       .field-row { grid-template-columns: 1fr; }
     }
 
@@ -273,8 +273,8 @@
       padding: var(--button-padding-y) var(--button-padding-x);
       border: var(--layout-border-hairline) solid transparent;
       cursor: pointer;
-      min-height: 40px;
-      min-width: 40px;
+      min-height: var(--layout-control-height-default);
+      min-width: var(--layout-control-min-target);
     }
 
     button:focus-visible {

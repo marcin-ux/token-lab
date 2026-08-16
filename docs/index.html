@@ -39,7 +39,7 @@
     }
 
     .shell {
-      width: min(980px, 100%);
+      width: min(var(--layout-container-wide), 100%);
       display: grid;
       gap: var(--layout-stack-loose);
       align-content: start;
@@ -101,8 +101,8 @@
       padding: var(--button-padding-y) var(--button-padding-x);
       border: var(--layout-border-hairline) solid transparent;
       cursor: pointer;
-      min-height: 32px;   /* clears WCAG 2.2 SC 2.5.8 target size (24px) */
-      min-width: 32px;
+      min-height: var(--layout-control-height-default);
+      min-width: var(--layout-control-min-target);
     }
     button:focus-visible {
       outline: var(--focus-ring-width) solid var(--focus-ring-color);
@@ -134,7 +134,7 @@
       border: var(--layout-border-hairline) solid var(--field-border);
       border-radius: var(--field-radius);
       padding: var(--field-padding-y) var(--field-padding-x);
-      min-height: 40px;
+      min-height: var(--layout-control-height-comfortable);
     }
     input::placeholder { color: var(--field-placeholder); }
     input:focus-visible {
@@ -171,8 +171,8 @@
       border-bottom: var(--layout-border-hairline) solid var(--surface-border);
     }
     .swatch {
-      width: 28px;
-      height: 28px;
+      width: var(--layout-swatch-size);
+      height: var(--layout-swatch-size);
       border-radius: var(--field-radius);
       border: var(--layout-border-hairline) solid var(--surface-border);
       flex: none;
@@ -237,13 +237,13 @@
     .pair-preview {
       display: inline-grid;
       place-items: center;
-      width: 28px;
-      height: 28px;
+      width: var(--layout-swatch-size);
+      height: var(--layout-swatch-size);
       border-radius: var(--field-radius);
       border: var(--layout-border-hairline) solid var(--surface-border);
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 640px) { /* lint-ignore: breakpoint — no responsive tier in this system */
       .audit-row { grid-template-columns: 1fr auto; }
       .audit-row .sc { display: none; }
       .token-row { grid-template-columns: auto 1fr; }
