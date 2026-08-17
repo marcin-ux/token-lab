@@ -81,7 +81,6 @@ These are acceptance criteria, not nice-to-haves.
 - This is a static prototype of the presentation layer. Mock the member list and the "already has access" check with hard-coded data in the page — the existing members should be the same addresses that trigger that error.
 - Must work in every brand and mode the product supports, with no visual regressions in any of them.
 - Build it with the design system. Use `build/AGENT-BRIEF.md` as the source of available tokens.
-- If something this brief asks for cannot be built from the available tokens, **stop and say so** rather than inventing a value. Name what's missing and what you'd need.
 - `npm run check` must pass.
 
 ---
